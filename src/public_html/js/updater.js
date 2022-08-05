@@ -1,84 +1,6 @@
 const METRIC_DEFAULT = {
 }
 
-globalThis.memoryChart = null
-
-const getFakeData = (len, inc = 2000, init = 0) => {
-    const a = []
-    let d = datetime().time() - inc * len
-    for (let i = 0; i < len; i++) {
-        a.push([d, init])
-        d += inc
-    }
-    return a
-}
-
-const chartOptions = {
-    border: {
-        color: "transparent"
-    },
-    background: "transparent",
-    height: 80,
-    legend: {
-        position: 'top-left',
-        vertical: true,
-        background: "#fff",
-        margin: {
-            left: 4,
-            top: 4
-        },
-        border: {
-            color: "#fafbfc"
-        },
-        padding: 2,
-        font: {
-            color: "#24292e",
-            size: 10
-        },
-    },
-    axis: {
-        x: {
-            line: {
-                color: "#fafbfc",
-                shortLineSize: 0
-            },
-            label: {
-                count: 10,
-                fixed: 0,
-                color: "#24292e",
-                font: {
-                    size: 10
-                }
-            },
-            skip: 2,
-        },
-        y: {
-            line: {
-                color: "#fafbfc"
-            },
-            label: {
-                count: 10,
-                fixed: 0,
-                color: "#24292e",
-                font: {
-                    size: 10
-                },
-                skip: 2,
-                showLabel: false
-            }
-        }
-    },
-    arrows: false,
-    padding: 0,
-    margin: 0,
-    boundaries: {
-        maxY: 0,
-        minY: 0
-    },
-    tooltip: false,
-    onDrawLabelX: () => ''
-}
-
 globalThis.updateLedgerData = (data) => {
     const ledger = data.ledger
     const target = data.target
@@ -156,26 +78,9 @@ globalThis.updateLedgerData = (data) => {
     }
 }
 
-globalThis.updateHealthData = (data) => {
-    const error = !data.ledger
-    const n = $("#node_health").removeClassBy("fg-")
-    const v = $("#api_version")
-
-    v.html(data.api)
-
-    if (error) {
-        n.addClass("fg-red").text("aptos-node:error")
-    } else {
-        const h = +data.ledger.ledger_version
-        const c = h ? "fg-green" : "fg-red"
-
-        n.removeClassBy("fg-").addClass(c).text(h ? "aptos-node:ok" : "aptos-node:error")
-    }
-}
-
 globalThis.updateMetricData = (d) => {
     let metric
-    const status = typeof d.storage_ledger_version !== "undefined"
+    const status = typeof d.check !== "undefined"
     const errorLog = $("#error-log-metric").clear()
 
     if (!status) {
@@ -200,50 +105,6 @@ globalThis.updateMetricData = (d) => {
         }
     }
 
-    // if (!globalThis.memoryChart) {
-    //     globalThis.memoryChart = chart.areaChart("#memory-usage-chart", [
-    //         getFakeData(100),
-    //         getFakeData(100)
-    //     ], {
-    //         ...chartOptions,
-    //         // background: chartBackground,
-    //         axis: {
-    //             x: {
-    //                 line: {
-    //                     color: "transparent"
-    //                 }
-    //             },
-    //             y: {
-    //                 line: {
-    //                     color: "transparent"
-    //                 }
-    //             },
-    //         },
-    //         margin: 0,
-    //         legend: false,
-    //         colors: [Metro.colors.toRGBA('#7dc37b', .5), Metro.colors.toRGBA('#aa00ff', .5)],
-    //         areas: [
-    //             {
-    //                 name: "Free"
-    //             },
-    //             {
-    //                 name: "Used"
-    //             }
-    //         ]
-    //     })
-    // }
-    //
-    // const totalMem = +(metric['system_total_memory'])
-    // const usedMem = +(metric['system_used_memory'])
-    //
-    // globalThis.memoryChart.setBoundaries({maxY: totalMem})
-    // globalThis.memoryChart.add(0, [datetime().time() - 2000, totalMem], true)
-    // globalThis.memoryChart.add(1, [datetime().time() - 2000, usedMem], true)
-    //
-    // $("#memory-usage").html(`${Math.ceil(usedMem * 100 / totalMem)}%`)
-    // $("#memory-usage-val").html(`${(usedMem / 1024**2).toFixed(2)}`)
-
-    // const syncStatus = $("#sync_status")
     const nodeType = $("#node-type")
     const nodeTypeIcon = $("#node-type-icon").removeClassBy("fg-")
     const networkIcon = $("#network-icon").removeClassBy("fg-")
@@ -268,18 +129,7 @@ globalThis.updateMetricData = (d) => {
         $("#validator-state").hide()
     }
 
-    const peerStatus = $("#peer_status")
-
-    peerStatus.parent().removeClassBy("bg-").addClass("fg-white")
-    if (+metric.connections_outbound > 0 ) {
-        peerStatus.parent().addClass("bg-green")
-        peerStatus.text("OK")
-    } else {
-        peerStatus.parent().addClass(metric.is_validator ? "bg-violet" : "bg-red")
-        peerStatus.text("NO PEERS DATA")
-    }
-
-    const metricStatus = $("#metric_status")
+    const metricStatus = $("#metric-status")
 
     metricStatus.parent().removeClassBy("bg-").addClass("fg-white")
     if (status) {
@@ -290,13 +140,6 @@ globalThis.updateMetricData = (d) => {
         metricStatus.text("PORT CLOSED")
     }
 }
-
-
-globalThis.updateApiData = (data) => {
-    updateLedgerData(data)
-    updateHealthData(data)
-}
-
 
 globalThis.updatePortTest = data => {
     const ports = data.test
@@ -313,15 +156,42 @@ globalThis.updatePortTest = data => {
     }
 }
 
-globalThis.updateAptosState = data => {
-    if (!data) return
-    globalThis.aptosState = data
-    const {chain_id, ledger_version, ledger_timestamp, epoch} = data
-    const aptosVersion = $("#aptos-version")
-    const aptosChain = $("#aptos-chain-id")
-    const aptosEpoch = $("#aptos-epoch")
-    const aptosTimestamp = $("#aptos-timestamp")
+globalThis.updateRpcDiscover = data => {
+    const {rpc_discover, target} = data
+    const nodeSecured = $("#node-secured")
+    const nodeHealth = $("#node-health")
+    const apiStatus = $("#api-status")
 
-    aptosChain.text(n2f(chain_id))
-    aptosVersion.text(n2f(ledger_version))
+    $("#sync-status").parent().addClass("bg-violet fg-white")
+
+    nodeSecured.removeClass("d-none")
+    if (target.prot === 'HTTPS') {
+        nodeSecured.removeClass("d-none")
+    }
+
+    $("#node-host").html(target.host)
+
+
+    nodeHealth.removeClass("fg-green")
+    if (rpc_discover) {
+        nodeHealth.addClass("fg-green").html(`node-health:ok`)
+    }
+
+    apiStatus.parent().removeClassBy("bg-")
+    apiStatus.parent().removeClassBy("fg-")
+    if (rpc_discover) {
+        apiStatus.html(`CONNECTED`)
+        apiStatus.parent().addClass(`bg-green fg-white`)
+
+        $("#node-timestamp").html(datetime(rpc_discover.timestamp).format(dateFormat.full))
+        $("#rpc-version").html(rpc_discover.info.version)
+        $("#rpc-type").html(rpc_discover.info.title)
+        $("#rpc-title").html(rpc_discover.info.title)
+        $("#rpc-description").html(rpc_discover.info.description)
+        $("#open-rpc-version").html(rpc_discover.openrpc)
+
+        $("#contact-name").html(rpc_discover.info.contact.name)
+        $("#contact-url").html(rpc_discover.info.contact.url)
+        $("#contact-email").html(rpc_discover.info.contact.email)
+    }
 }

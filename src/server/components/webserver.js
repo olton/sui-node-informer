@@ -1,6 +1,4 @@
 import http from "http";
-import https from "https";
-import fs from "fs";
 import path from "path";
 import express from "express";
 import session from "express-session"
@@ -29,15 +27,13 @@ const route = () => {
     app.set('view engine', 'pug')
 
     const clientConfig = JSON.stringify(config.client)
-    const aptosConfig = JSON.stringify(config.aptos)
     const dateFormat = JSON.stringify(config['date-format'])
 
     app.get('/', async (req, res) => {
         res.render('index', {
-            title: `Aptos Node Informer v${version}`,
+            title: `Sui Node Informer v${version}`,
             version,
             clientConfig,
-            aptosConfig,
             dateFormat,
         })
     })

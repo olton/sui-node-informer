@@ -1,6 +1,3 @@
-globalThis.aptosState = {
-    chain_id: 0, ledger_version: 0, ledger_timestamp: 0, epoch: 0
-}
 
 globalThis.n2f = (n) => Number(n).format(0, null, " ", ".")
 
@@ -8,11 +5,12 @@ globalThis.enterAddress = (form) => {
     $("#error-log-api").clear()
     $("#error-log-metric").clear()
 
-    const statuses = ["api_status", 'metric_status', 'chain_status', 'sync_status', 'peer_status']
-    const ports = ["api", "metrics", "seed"]
+    const statuses = ["api-status", 'metric-status', 'sync-status']
+    const ports = ["api", "metrics", "http"]
 
     for(let s of statuses) {
         $("#"+s).parent().removeClassBy("bg-")
+        $("#"+s).parent().removeClassBy("fg-")
     }
 
     for(let p of ports) {
@@ -29,11 +27,11 @@ globalThis.enterAddress = (form) => {
     let address = form.elements["node_address"].value.trim()
     let api = (form.elements["api_port"].value.trim())
     let metric = (form.elements["metric_port"].value.trim())
-    let seed = (form.elements["seed_port"].value.trim())
+    let http = (form.elements["http_port"].value.trim())
 
-    if (api.length === 0) api = 8080
-    if (metric.length === 0) metric = 9101
-    if (seed.length === 0) seed = 6180
+    if (api.length === 0) api = 9000
+    if (metric.length === 0) metric = 9184
+    if (http.length === 0) http = 8080
 
     if (!address) {
         nodeAddress = ""
@@ -45,7 +43,7 @@ globalThis.enterAddress = (form) => {
     nodeAddress = address
     apiPort = (isNaN(api) ? 8080 : +api)
     metricPort = (isNaN(metric) ? 9101 : +metric)
-    seedPort = (isNaN(seed) ? 6180 : +seed)
+    httpPort = (isNaN(http) ? 6180 : +http)
 
 }
 
@@ -90,7 +88,7 @@ const changeColors = () => {
     globalThis.portsProt = {
         api: 'HTTP',
         metrics: 'HTTP',
-        seed: 'HTTP'
+        http: 'HTTP'
     }
 
     globalThis.apiVersion = 'v0'
@@ -120,7 +118,7 @@ const changeColors = () => {
     const ports = {
         api: apiPort,
         metrics: metricPort,
-        seed: seedPort
+        http: httpPort
     }
     const portsWrapper = $(".ports-wrapper")
     for(let p in ports) {
@@ -139,7 +137,7 @@ const changeColors = () => {
     const address = Metro.utils.getURIParameter(window.location.href, "address")
     const api = Metro.utils.getURIParameter(window.location.href, "api")
     const metric = Metro.utils.getURIParameter(window.location.href, "metrics")
-    const seed = Metro.utils.getURIParameter(window.location.href, "seed")
+    const http = Metro.utils.getURIParameter(window.location.href, "http")
 
     if (address) {
         $("#address-form")[0].elements['node_address'].value = address
@@ -156,16 +154,11 @@ const changeColors = () => {
         metricPort = metric
     }
 
-    if (seed) {
+    if (http) {
         $("#address-form")[0].elements['seed_port'].value = seed
-        seedPort = seed
+        httpPort = http
     }
 
     currentTime()
 
-    {
-        const {chain = 0, network = 'None'} = aptos
-        $("#chain-id").text(chain)
-        $("#network").text(network)
-    }
 })

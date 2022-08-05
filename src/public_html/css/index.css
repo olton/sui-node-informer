@@ -88,6 +88,9 @@ td,
   align-items: center;
   justify-content: center;
 }
+#node-host {
+  overflow: hidden;
+}
 html.dark-mode {
   --body-background: #1e2228;
   --color-text: #adbaa9;

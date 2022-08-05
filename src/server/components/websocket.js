@@ -1,6 +1,7 @@
 import {WebSocketServer, WebSocket} from "ws";
-import {getHostMetrics, getHostApiData, testPorts, HEALTH_ENDPOINT, LEDGER_ENDPOINT} from "./node.js";
+import {getHostMetrics, getHostApiData, testPorts} from "./node.js";
 import {parseMetrics} from "./parser.js";
+import {rpcDiscover} from "./rpc/discover.js";
 
 export const websocket = (server) => {
     globalThis.wss = new WebSocketServer({ server })
@@ -22,10 +23,17 @@ export const websocket = (server) => {
                     response(ws, channel, res.includes(`:error:`) ? res : parseMetrics(res))
                     break
                 }
-                case "api": {
-                    const ledger = await getHostApiData({path: LEDGER_ENDPOINT, json: true, ...data})
+                case "rpc-discover": {
+                    const rpc_discover = await rpcDiscover({json: true, ...data})
                     response(ws, channel, {
-                        api: data.ver,
+                        rpc_discover,
+                        target: data
+                    })
+                    break
+                }
+                case "api": {
+                    const ledger = await getHostApiData(data.body,{json: true, ...data})
+                    response(ws, channel, {
                         ledger,
                         target: data
                     })
@@ -36,10 +44,6 @@ export const websocket = (server) => {
                         test: await testPorts(data.host, data.ports),
                         target: data
                     })
-                    break
-                }
-                case "aptos": {
-                    response(ws, channel, globalThis.aptosState)
                     break
                 }
             }

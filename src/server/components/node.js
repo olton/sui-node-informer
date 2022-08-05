@@ -1,9 +1,6 @@
 import fetch, {AbortError} from "node-fetch";
 import {testPort} from "../helpers/test-port.js";
 
-export const HEALTH_ENDPOINT = '/-/healthy';
-export const LEDGER_ENDPOINT = '/';
-
 export const getHostMetrics = async ({host = "", port, prot = "http"}) => {
     const link = `${prot.toLowerCase()}://${host}${port  && ![443, 80].includes(port) ? ':'+port:''}/metrics`
     let result = ""
@@ -29,8 +26,8 @@ export const getHostMetrics = async ({host = "", port, prot = "http"}) => {
     return result
 }
 
-export const getHostApiData = async ({ver = 'v0', path = LEDGER_ENDPOINT, json = true, host = "", port, prot = "http"}) => {
-    const link = `${prot.toLowerCase()}://${host}${port && ![443, 80].includes(port) ? ':'+port:''}${path}${ver === 'v0' ? '' : '/v1'}`
+export const getHostApiData = async (body, { json = true, host = "", port, prot = "http"}) => {
+    const link = `${prot.toLowerCase()}://${host}${port && ![443, 80].includes(port) ? ':'+port:''}`
     let result
 
     const controller = new AbortController()
@@ -40,13 +37,14 @@ export const getHostApiData = async ({ver = 'v0', path = LEDGER_ENDPOINT, json =
 
     try {
         const response = await fetch(link, {
-            signal: controller.signal
+            signal: controller.signal,
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {'Content-Type': 'application/json'}
         });
         if (response.ok) {
             result = json ? {
                 ...(await response.json()),
-                aptos_chain_id: +globalThis.aptosState.chain_id,
-                aptos_version: +globalThis.aptosState.ledger_version,
             } : await response.text()
         } else {
             result = json ? {error: "no response"} : ":error:no response"

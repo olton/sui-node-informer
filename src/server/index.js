@@ -3,7 +3,6 @@ import { fileURLToPath } from 'url'
 import fs from "fs";
 import {info, error} from "./helpers/logging.js"
 import {runWebServer} from "./components/webserver.js";
-import {getAptosState} from "./components/aptos.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const readConfig = (path) => JSON.parse(fs.readFileSync(path, 'utf-8'))
@@ -27,7 +26,6 @@ globalThis.version = pkg.version
 
 const runProcesses = () => {
     // setImmediate( () => {} )
-    setImmediate( getAptosState )
 }
 
 export const run = (configPath) => {

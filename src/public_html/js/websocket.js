@@ -52,9 +52,9 @@ const wsMessageController = (ws, response) => {
         return
     }
 
-    const requestApiData = ws => {
+    const requestRpcDiscover = ws => {
         if (nodeAddress) {
-            request('api', {
+            request('rpc-discover', {
                     host: nodeAddress,
                     port: apiPort,
                     prot: globalThis.portsProt.api,
@@ -62,7 +62,7 @@ const wsMessageController = (ws, response) => {
                 }
             )
         } else {
-            setTimeout(requestApiData, 5000, ws)
+            setTimeout(requestRpcDiscover, 5000, ws)
         }
     }
 
@@ -87,7 +87,7 @@ const wsMessageController = (ws, response) => {
                 ports: {
                     api: apiPort,
                     metrics: metricPort,
-                    seed: seedPort
+                    http: httpPort
                 }
             })
         } else {
@@ -95,16 +95,11 @@ const wsMessageController = (ws, response) => {
         }
     }
 
-    const requestAptosState = ws => {
-        request('aptos')
-    }
-
     switch(channel) {
         case 'welcome': {
-            requestApiData(ws)
+            requestRpcDiscover(ws)
             requestMetricsData(ws)
             requestPortsTest(ws)
-            requestAptosState(ws)
             break
         }
         case 'metrics': {
@@ -113,20 +108,15 @@ const wsMessageController = (ws, response) => {
             $("#activity").hide()
             break
         }
-        case 'api': {
-            updateApiData(data)
-            setTimeout(requestApiData, 5000, ws)
+        case 'rpc-discover': {
+            updateRpcDiscover(data)
+            setTimeout(requestRpcDiscover, 5000, ws)
             $("#activity").hide()
             break
         }
         case 'ports': {
             updatePortTest(data)
             setTimeout(requestPortsTest, 5000, ws)
-            break
-        }
-        case 'aptos': {
-            updateAptosState(data)
-            setTimeout(requestAptosState, 1000, ws)
             break
         }
     }

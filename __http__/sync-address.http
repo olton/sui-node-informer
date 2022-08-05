@@ -1,0 +1,11 @@
+POST https://sui-node.net
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "get_versions",
+  "id": 1
+}
+
+###
+

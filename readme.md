@@ -1,6 +1,6 @@
-# Aptos Node Informer
+# Sui Node Informer
 
-Welcome to [Aptos Node Informer](http://aptos-node.info).
+Welcome to [Sui Node Informer](http://sui-node.info).
 
 **Aptos Node Informer** - is a special test site for obtaining information about starting Aptos Node, getting info about required ports, and node metrics.
 

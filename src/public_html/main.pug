@@ -14,22 +14,22 @@ main.container-fluid
 
             div.cell-lg-3.cell-md-6
                 div.border.bd-system.p-3
-                    div.reduce-4.text-bold APTOS VERSION
-                    div.h3.text-light.m-0.value#aptos-version Unknown
+                    div.reduce-4.text-bold SUI JSON-RPC VERSION
+                    div.h3.text-light.m-0.value#rpc-version Unknown
                     div#version-icon
                         span.mif-versions
 
             div.cell-lg-3.cell-md-6
                 div.border.bd-system.p-3
-                    div.reduce-4.text-bold APTOS CHAIN ID
-                    div.h3.text-light.m-0.value#aptos-chain-id 0
+                    div.reduce-4.text-bold RPC TYPE
+                    div.h3.text-light.m-0.value#rpc-type Unknown
                     div#chain-ok
-                        span.mif-link
+                        span.mif-net-server(style="opacity: .3")
 
             div.cell-lg-3.cell-md-6
                 div.border.bd-system.p-3
                     div.reduce-4.text-bold NETWORK
-                    div.h3.text-light.m-0.value#network None
+                    div.h3.text-light.m-0.value#network DEVNET
                     div#network-icon
                         span.mif-database
 
@@ -41,70 +41,45 @@ main.container-fluid
         div.cell-md-8
             div.text-leader2 Node Status
             div.row.text-center.text-small.reduce-3
-                div.cell-sm-6.cell-md-one-fifth
+                div.cell-sm-4.cell-md-one-third
                     div.border.bd-default.p-2
                         div.small-box-title API:
-                        div.small-box-value#api_status ---
+                        div.small-box-value#api-status ---
 
-                div.cell-sm-6.cell-md-one-fifth
+                div.cell-sm-4.cell-md-one-third
                     div.border.bd-default.p-2
                         div.small-box-title METRIC:
-                        div.small-box-value#metric_status ---
+                        div.small-box-value#metric-status ---
 
-                div.cell-sm-6.cell-md-one-fifth
-                    div.border.bd-default.p-2
-                        div.small-box-title CHAIN:
-                        div.small-box-value#chain_status ---
-
-                div.cell-sm-6.cell-md-one-fifth
+                div.cell-sm-4.cell-md-one-third
                     div.border.bd-default.p-2
                         div.small-box-title SYNC:
-                        div.small-box-value#sync_status ---
-
-                div.cell-sm-6.cell-md-one-fifth
-                    div.border.bd-default.p-2
-                        div.small-box-title PEERS:
-                        div.small-box-value#peer_status ---
+                        div.small-box-value#sync-status NOT AVAILABLE
 
     div.row
         //div.cell-md-6.cell-lg-3
         //    include ./blocks/system
+        div.cell-md-6.cell-lg-4
+            include ./blocks/sync
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/api-ledger-info
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/sync-status
+        div.cell-md-6.cell-lg-4
+            include ./blocks/rout
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/connections
+        div.cell-md-6.cell-lg-4
+            include ./blocks/rpc-discover
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/requests
+        div.cell-md-6.cell-lg-4
+            include ./blocks/target
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/traffic
+        div.cell-md-6.cell-lg-4
+            include ./blocks/rpc-info
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/rpc-bytes
+        div.cell-md-6.cell-lg-4
+            include ./blocks/totals
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/rpc-messages
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/queues
 
-        div.cell-md-6.cell-lg-3
-            include ./blocks/ledger-storage
-
-        div.cell-md-6.cell-lg-3
-            include ./blocks/transactions
-
-        div.cell-md-6.cell-lg-3
-            include ./blocks/metrics
-
-        div.cell-md-6.cell-lg-3
-            include ./blocks/jellyfish
 
 
 

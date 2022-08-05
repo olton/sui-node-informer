@@ -1,0 +1,27 @@
+div( data-role="panel" data-title-caption="NODE INFO" )
+    div.w-100
+        table.table.subcompact.cell-border.mt-4
+            tr
+                td
+                    span Host
+                    span.place-right.mif-security.d-none#node-secured
+
+                td.text-right.value
+                    span#node-host Unknown
+            tr
+                td Timestamp
+                td.text-right.value
+                    span#node-timestamp DD/MM/YYYY HH:mm:ss
+            tr
+                td Version
+                td.text-right.value
+                    span#rpc-version Unknown
+            tr
+                td OPEN RPC
+                td.text-right.value
+                    span#open-rpc-version Unknown
+
+        div.mt-4
+            div.text-leader.text-center
+                span#node-health node-health:unknown
+
