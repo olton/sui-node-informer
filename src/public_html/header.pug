@@ -1,0 +1,37 @@
+section.container-fluid
+    div.row
+        div.cell-md-4.text-center.text-left-md.order-1.order-md-1
+            div.text-leader.text-light.no-wrap.mt-2
+                span.text-bold APTOS
+                span.fg-orange INFO
+                small.ml-1.fg-normal#version v#{version}
+
+        div.cell-md-4.text-center.order-2.order-md-3
+            div.text-leader
+                div Welcome to Aptos Node Informer
+                div.text-small Copyright 2022 by
+                    a.ml-1.no-decor.fg-cyan(href="https://pimenov.com.ua") Serhii Pimenov.
+                    span.ml-1 From Ukraine for Aptos Community.
+
+        div.cell-md-4.text-center.text-right-md.order-2.order-md-3
+            div.text-leader2.text-light.no-wrap.mt-2
+                span#current-time
+                span.ml-2
+                    span.light-mode-switch.mif-sun
+                    span.dark-mode-switch.mif-moon
+
+    div.row
+        div.cell-md-12.text-center.order-3.order-md-2
+            form#address-form.address-form.row(action="javascript:" onsubmit="enterAddress(this)")
+                div.cell-md-4.port-wrapper
+                    input(data-append="<small class='api-version-switcher' data-api-version='api'>v0</small>" type="text" data-role="input" name="node_address" placeholder="Enter clear IP address or Domain name" data-prepend="ADR" title="Your Server IP or Domain Name")
+                div.cell-md-8.port-wrapper
+                    div.port
+                        input(data-append="<small class='port-protocol-switcher' data-port-type='api'>HTTP</small>" type="text" data-role="input" name="api_port" placeholder="8080" data-prepend="API" title="API Port Number" data-clear-button="false")
+                    div.port.ml-1
+                        input(data-append="<small class='port-protocol-switcher' data-port-type='metrics'>HTTP</small>" type="text" data-role="input" name="metric_port" placeholder="9101" data-prepend="MET" title="Metrics Port Number" data-clear-button="false")
+                    div.port.ml-1
+                        input( type="text" data-role="input" name="seed_port" placeholder="6180" data-prepend="SEED" title="Seed Port Number" data-clear-button="false")
+                    button.ml-1.button.info(type="submit")
+                        span.mif-search
+

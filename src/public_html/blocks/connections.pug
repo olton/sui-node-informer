@@ -1,0 +1,34 @@
+div( data-role="panel" data-title-caption="CONNECTIONS" )
+    div.w-100
+        div.row.border-bottom.bd-system.pb-2
+            div.cell-6
+                div.text-bold.text-center
+                    div.reduce-3 INBOUND
+                    div.text-leader2.text-bold.value#connections_inbound 0
+            div.cell-6.border-left.bd-system
+                div.text-bold.text-center
+                    div.reduce-3 OUTBOUND
+                    div.text-leader2.text-bold.value#connections_outbound 0
+
+        div.row.border-bottom.bd-system.pb-2
+            div.cell-6
+                div.text-bold.text-center
+                    div.reduce-3 PRIORITIZED PEERS
+                    div.text-leader2.text-bold.value#connected_peers_priortized 0
+            div.cell-6.border-left.bd-system
+                div.text-bold.text-center
+                    div.reduce-3 REGULAR PEERS
+                    div.text-leader2.text-bold.value#connected_peers_regular 0
+
+        table.table.subcompact.cell-border.mt-4
+            tr
+                td SME Lost Peer
+                td.text-right.value
+                    span#shared_mempool_events_lost_peer 0
+                td SME New Peer
+                td.text-right.value
+                    span#shared_mempool_events_new_peer 0
+            tr
+                td(colspan=2) Active Peers
+                td(colspan=2).text-right.value
+                    span#mempool_active_upstream_peers_count 0
