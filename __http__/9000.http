@@ -1,4 +1,4 @@
-POST https://sui-node.net
+POST https://sui.net.ua
 Content-Type: application/json
 
 {
