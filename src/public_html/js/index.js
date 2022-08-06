@@ -15,11 +15,12 @@ globalThis.enterAddress = (form) => {
 
     for(let p of ports) {
         $("#port-"+p).parent().removeClassBy("bg-")
+        $("#port-"+p).parent().removeClassBy("fg-")
     }
 
     $("#node-type-icon").removeClassBy("fg-").html($("<span>").addClass("mif-question"))
-    $("#chain-ok").removeClassBy("fg-")
     $("#network-icon").removeClassBy("fg-")
+    $("#rpc-type-icon").removeClassBy("fg-")
 
     $("#memory-usage-chart").clear()
     globalThis.memoryChart = null
@@ -41,9 +42,9 @@ globalThis.enterAddress = (form) => {
     $("#activity").show()
 
     nodeAddress = address
-    apiPort = (isNaN(api) ? 8080 : +api)
-    metricPort = (isNaN(metric) ? 9101 : +metric)
-    httpPort = (isNaN(http) ? 6180 : +http)
+    apiPort = (isNaN(api) ? 9000 : +api)
+    metricPort = (isNaN(metric) ? 9184 : +metric)
+    httpPort = (isNaN(http) ? 8080 : +http)
 
 }
 

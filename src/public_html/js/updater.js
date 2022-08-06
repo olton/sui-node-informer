@@ -151,8 +151,14 @@ globalThis.updatePortTest = data => {
         const el = $("#port-"+port)
         const pr = el.parent()
         const portNum = targets[port]
-        pr.removeClassBy("bg-").addClass(!portNum ? 'bg-violet' : ports[port] ? "bg-green" : "bg-red").addClass("fg-white")
-        el.html(`${!portNum ? 'NOT DEF' : portNum}`)
+
+        pr
+            .removeClassBy("bg-")
+            .removeClassBy("fg-")
+            .addClass(!portNum ? 'bg-violet' : ports[port] ? "bg-green" : "bg-red")
+            .addClass("fg-white")
+
+        el.html(`${!portNum ? 'NO DEF' : portNum}`)
     }
 }
 
@@ -161,27 +167,26 @@ globalThis.updateRpcDiscover = data => {
     const nodeSecured = $("#node-secured")
     const nodeHealth = $("#node-health")
     const apiStatus = $("#api-status")
+    const rpcTypeIcon = $("#rpc-type-icon")
 
     $("#sync-status").parent().addClass("bg-violet fg-white")
 
-    nodeSecured.removeClass("d-none")
+    nodeSecured.addClass("d-none")
     if (target.prot === 'HTTPS') {
         nodeSecured.removeClass("d-none")
     }
 
     $("#node-host").html(target.host)
 
-
     nodeHealth.removeClass("fg-green")
-    if (rpc_discover) {
-        nodeHealth.addClass("fg-green").html(`node-health:ok`)
-    }
-
+    rpcTypeIcon.removeClass("fg-green")
     apiStatus.parent().removeClassBy("bg-")
     apiStatus.parent().removeClassBy("fg-")
     if (rpc_discover) {
         apiStatus.html(`CONNECTED`)
         apiStatus.parent().addClass(`bg-green fg-white`)
+        rpcTypeIcon.addClass('fg-green')
+        nodeHealth.addClass("fg-green").html(`node-health:ok`)
 
         $("#node-timestamp").html(datetime(rpc_discover.timestamp).format(dateFormat.full))
         $("#rpc-version").html(rpc_discover.info.version)
